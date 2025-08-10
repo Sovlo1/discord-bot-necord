@@ -53,29 +53,46 @@ export class MessageReactionService {
         break;
     }
 
+    let attachments: null | any = null;
+
+    if (message.message.attachments.size > 0) {
+      attachments = message.message.attachments.map((x) => x);
+    }
+
     if (
       isMsgAlreadyInHoF === null &&
       message.emoji.name === '⭐' &&
       message.countDetails.normal >= 3
     ) {
-      const embedMessage = new EmbedBuilder()
-        .setColor('Blurple')
-        .setAuthor({
-          name: message.message.author?.globalName || 'N/A',
-          iconURL: message.message.author?.displayAvatarURL({
-            extension: 'png',
-          }),
-        })
-        .setDescription(message.message.content)
-        .addFields({
-          name: 'Source',
-          value: `[Jump to message](${message.message.url})`,
-        });
-
       const sentHoFMessage = hallOfFameChannel.send({
         content:
           starValue + '**' + message.countDetails.normal.toString() + '**',
-        embeds: [embedMessage],
+        embeds: [
+          {
+            author: {
+              name:
+                message.message.author?.globalName ||
+                message.message.author?.username ||
+                'N/A',
+              icon_url: message.message.author?.displayAvatarURL({
+                extension: 'png',
+              }),
+            },
+            description:
+              message.message.content !== ''
+                ? message.message.content
+                : attachments[0].attachment,
+            fields: [
+              {
+                name: 'Source',
+                value: `[Jump to message](${message.message.url})`,
+              },
+            ],
+            image: {
+              url: attachments !== null ? attachments[0].attachment : '',
+            },
+          },
+        ],
       });
       const msgId = (await sentHoFMessage).id;
 
