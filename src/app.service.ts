@@ -22,10 +22,6 @@ export class AppService {
       process.env.HALL_OF_FAME_CHANNEL_ID as string,
     )) as TextChannel;
 
-    const messageTest= await hallOfFameChannel.messages.fetch('1404188299081416735');
-    console.log(messageTest);
-    console.log(messageTest.embeds[0]);
-
     this.logger.log(
       `Fetching channel ${hallOfFameChannel.name} (${hallOfFameChannel.id})`,
     );

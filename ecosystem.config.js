@@ -10,7 +10,7 @@ module.exports = {
       watch: '.',
       name: 'discordBot',
       node_args: '-r dotenv/config',
-      args: 'dotenv_config_path=./.env',
+      args: 'dotenv_config_path=.env',
     },
   ],
 };
