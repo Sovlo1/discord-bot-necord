@@ -102,6 +102,7 @@ export class MessageReactionService {
         botMessageId: msgId,
         messageContent: message.message.content,
         starQuantity: message.countDetails.normal,
+        embeds: message.message.embeds.map((embed) => embed.toJSON()),
         createdAt: new Date(),
       }).save();
 
