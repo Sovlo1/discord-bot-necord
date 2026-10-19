@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
 import {
   Client,
   Collection,
@@ -8,11 +8,11 @@ import {
   Role,
   TextChannel,
   User,
-} from 'discord.js';
-import { Model, Types } from 'mongoose';
-import { ContextOf } from 'necord';
-import { GameMeetUp } from 'src/schemas/game-meetup.schema';
-import { HallOfFameMessage } from 'src/schemas/hallOfFame.schema';
+} from "discord.js";
+import { Model, Types } from "mongoose";
+import { ContextOf } from "necord";
+import { GameMeetUp } from "src/schemas/game-meetup.schema";
+import { HallOfFameMessage } from "src/schemas/hallOfFame.schema";
 
 @Injectable()
 export class MessageReactionService {
@@ -37,19 +37,19 @@ export class MessageReactionService {
 
     switch (true) {
       case message.countDetails.normal <= 4:
-        starValue = '⭐ ';
+        starValue = "⭐ ";
         break;
       case message.countDetails.normal <= 7:
-        starValue = '🌟 ';
+        starValue = "🌟 ";
         break;
       case message.countDetails.normal <= 9:
-        starValue = '💫 ';
+        starValue = "💫 ";
         break;
       case message.countDetails.normal > 9:
-        starValue = '🔥 ';
+        starValue = "🔥 ";
         break;
       default:
-        starValue = '⭐ ';
+        starValue = "⭐ ";
         break;
     }
 
@@ -61,35 +61,35 @@ export class MessageReactionService {
 
     if (
       isMsgAlreadyInHoF === null &&
-      message.emoji.name === '⭐' &&
+      message.emoji.name === "⭐" &&
       message.countDetails.normal >= 3
     ) {
       const sentHoFMessage = hallOfFameChannel.send({
         content:
-          starValue + '**' + message.countDetails.normal.toString() + '**',
+          starValue + "**" + message.countDetails.normal.toString() + "**",
         embeds: [
           {
             author: {
               name:
                 message.message.author?.globalName ||
                 message.message.author?.username ||
-                'N/A',
+                "N/A",
               icon_url: message.message.author?.displayAvatarURL({
-                extension: 'png',
+                extension: "png",
               }),
             },
             description:
-              message.message.content !== ''
+              message.message.content !== ""
                 ? message.message.content
                 : attachments[0].attachment,
             fields: [
               {
-                name: 'Source',
+                name: "Source",
                 value: `[Jump to message](${message.message.url})`,
               },
             ],
             image: {
-              url: attachments !== null ? attachments[0].attachment : '',
+              url: attachments !== null ? attachments[0].attachment : "",
             },
           },
         ],
@@ -113,6 +113,15 @@ export class MessageReactionService {
         isMsgAlreadyInHoF.botMessageId,
       );
 
+      if (message.countDetails.normal < 3) {
+        await this.hallOfFameMessageModel.deleteOne({
+          botMessageId: isMsgAlreadyInHoF.botMessageId,
+        });
+
+        await msg.delete();
+        return;
+      }
+
       await this.hallOfFameMessageModel.updateOne(
         { botMessageId: isMsgAlreadyInHoF.botMessageId },
         {
@@ -122,7 +131,7 @@ export class MessageReactionService {
 
       await msg.edit({
         content:
-          starValue + '**' + message.countDetails.normal.toString() + '**',
+          starValue + "**" + message.countDetails.normal.toString() + "**",
       });
     }
   }
@@ -155,7 +164,7 @@ export class MessageReactionService {
 
       if (!msgSent) {
         const botMsg = await channel.send({
-          content: `Vous êtes ${message.countDetails.normal} pour faire un ${roleList[0]}, ${userIdList.join(' ')}`,
+          content: `Vous êtes ${message.countDetails.normal} pour faire un ${roleList[0]}, ${userIdList.join(" ")}`,
         });
 
         const botMessageId = botMsg.id;
@@ -171,7 +180,7 @@ export class MessageReactionService {
       const msg = await channel.messages.fetch(msgSent.botMessageId);
 
       return await msg.edit({
-        content: `Vous êtes ${message.countDetails.normal} pour faire un ${roleList[0]}, ${userIdList.join(' ')}`,
+        content: `Vous êtes ${message.countDetails.normal} pour faire un ${roleList[0]}, ${userIdList.join(" ")}`,
       });
     }
   }

@@ -21,6 +21,7 @@ import {
 } from './schemas/hallOfFame.schema';
 import { ReminderScheduler } from './misc/reminder.schedule';
 import { CrotteCleanUpScheduler } from './misc/crotte.scheduler';
+import { RandomMessageScheduler } from './misc/random-message.scheduler';
 
 require('dotenv').config();
 
@@ -66,6 +67,7 @@ require('dotenv').config();
     ResponseService,
     Logger,
     MessageReactionService,
+    RandomMessageScheduler,
     ReminderScheduler,
     CrotteCleanUpScheduler,
   ],

@@ -19,6 +19,9 @@ export class HallOfFameMessage {
   starQuantity: number;
 
   @Prop()
+embeds: object[];
+
+  @Prop()
   createdAt: Date;
 }
 
