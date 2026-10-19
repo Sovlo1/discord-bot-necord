@@ -101,4 +101,14 @@ export class AppService {
       userList,
     );
   }
+
+  @On('messageReactionRemove')
+  public async onReactionRemove(
+    @Context() [message]: ContextOf<'messageReactionRemove'>,
+  ) {
+    const fetchedMessage = await message.fetch();
+    if (fetchedMessage.emoji.name === '⭐') {
+      return await this.messageReactionService.addToHallOfFame(fetchedMessage);
+    }
+  }
 }
