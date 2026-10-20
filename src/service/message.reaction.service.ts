@@ -95,14 +95,14 @@ export class MessageReactionService {
         ],
       });
       const msgId = (await sentHoFMessage).id;
+      const HoFMessage = await hallOfFameChannel.messages.fetch(msgId);
 
       await new this.hallOfFameMessageModel({
         _id: new Types.ObjectId(),
         messageId: message.message.id,
         botMessageId: msgId,
-        messageContent: message.message.content,
-        starQuantity: message.countDetails.normal,
-        embeds: message.message.embeds.map((embed) => embed.toJSON()),
+        messageContent: HoFMessage.content,
+        embeds: HoFMessage.embeds,
         createdAt: new Date(),
       }).save();
 

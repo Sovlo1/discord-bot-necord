@@ -1,0 +1,37 @@
+# name: Deploy Backend (Staging)
+
+# on:
+#   push:
+#     branches: ['main']
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     environment: staging
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Push environment file to server
+#         uses: appleboy/ssh-action@v1.0.0
+#         with:
+#           host: ${{ secrets.VPS_HOST }}
+#           username: ${{ secrets.VPS_USER }}
+#           key: ${{ secrets.VPS_SSH_KEY }}
+#           script: |
+#             echo "${{ secrets.ENV_BACKEND }}" > /var/www/backend/.env
+
+#       - name: Deploy Backend (staging)
+#         uses: appleboy/ssh-action@v1.0.0
+#         with:
+#           host: ${{ secrets.VPS_HOST }}
+#           username: ${{ secrets.VPS_USER }}
+#           key: ${{ secrets.VPS_SSH_KEY }}
+#           script: |
+#             cd /var/www/backend
+#             git fetch --all
+#             git reset --hard origin/staging
+#             npm install --production
+#             pm2 restart backend
+#             pm2 save
