@@ -102,7 +102,7 @@ export class MessageReactionService {
         messageId: message.message.id,
         botMessageId: msgId,
         messageContent: HoFMessage.content,
-        embeds: HoFMessage.embeds,
+        embeds: HoFMessage.embeds.map((embed) => embed.toJSON()),
         createdAt: new Date(),
       }).save();
 
